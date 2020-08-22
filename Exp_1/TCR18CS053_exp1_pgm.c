@@ -7,12 +7,16 @@ void main(){
     FILE *fin;               
     
     //checking if the file exixts if so it will open to input file buffer fin else the program will exit displayin ann error message
+    
     if ((fin = fopen("TCR18CS053_exp1_input.txt", "r")) == NULL) {
         fprintf(stderr,"Error! opening file");
         exit(1);
     } 
-    printf("CONTENTS OF INPUT FILE \"TCR18CS053_exp1_input.txt\"\n");
-    printf("Arrival Time\tBurst Time\tPriority\n");  
+
+    //Printing contents of input file
+
+    printf("\nCONTENTS OF INPUT FILE \"TCR18CS053_exp1_input.txt\"\n");
+    printf("\nArrival Time\tBurst Time\tPriority\n");  
     while (!feof(fin)){
        fscanf(fin,"%d\t%d\t%d", &a, &b, &c);
        printf("%d\t\t%d\t\t%d\n", a, b, c);
@@ -29,9 +33,10 @@ void main(){
     
     // To find Turn around time and wait time of FCFS First Come First Serve
 
-    printf("");
+    printf("\n----------------FCFS First Come First Serve---------------\n\n");
 
 
+    //Freing up dynamically allocated space
 
     free(at);
     free(bt);
