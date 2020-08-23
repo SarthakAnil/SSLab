@@ -31,6 +31,15 @@ void main(){
     tat = (int*) malloc(n * sizeof(int));
     wt = (int*) malloc(n * sizeof(int));
     
+    //Storing data from file to variables
+
+    rewind(fin);
+    i=0;        //to reposition the file pointer to start of file
+    while (!feof(fin)){
+        fscanf(fin, "%d\t%d\t%d", at+i, bt+i, p+i);
+        i++;
+    }
+
     // To find Turn around time and wait time of FCFS First Come First Serve
 
     printf("\n----------------FCFS First Come First Serve---------------\n\n");
