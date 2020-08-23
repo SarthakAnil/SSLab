@@ -120,7 +120,6 @@ void main(){
     int *at,*bt,*p,*tat,*wt; //pointers for Arrival Time(*at) Burst Time(*bt) Priority(*p) Turn Around Time(*tat) Wait Time(*wt)
     int a,b,c,i,n=0;             // Temp variables and loop variables
     FILE *fin;         
-    printf("%d",INT_MIN);
     //checking if the file exixts if so it will open to input file buffer fin else the program will exit displayin ann error message
     
     if ((fin = fopen("TCR18CS053_exp1_input.txt", "r")) == NULL) {
