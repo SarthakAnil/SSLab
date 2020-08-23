@@ -1,8 +1,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<limits.h>
+//Function to reset values of tat and wt to known values
+void resetVal(int *tat , int *wt,int n){
+    int i;
+    for (i = 0; i < n; i++){
+        *(tat + i) = INT_MIN;
+        *(wt + i) = INT_MIN;
+    }
+}
 
-//Function t
+//Function to find tat and wt for FCFS
+
 void fcfs(int *at, int *bt, int *tat, int *wt, int n){
     int cumulative = 0 ,i;
     for ( i = 0; i < n; i++){
@@ -14,23 +23,20 @@ void fcfs(int *at, int *bt, int *tat, int *wt, int n){
     
 }
 
+//Function to find tat and wt for SJF
+
 void sjf(int *at, int *bt, int *tat, int *wt, int n){
-    int cumulative = 0 ,i,min,pid,t=0,c=0;
+    int cumulative = 0 ,i,min,pid,c=0;
     while(1){
         min =INT_MAX;
         pid = -1;
         for (i = 0; i < n; i++){
-           if(*(at +i) <=t && *(bt + i) < min  && *(at + i) != INT_MIN){
+           if(*(at +i) <=cumulative && *(bt + i) < min  && *(at + i) != INT_MIN){
                min =*(bt + i);
                pid = i;
            }
         }
-        if(pid == -1){
-            min++;
-            continue;
-        }
-        t+=min;
-        cumulative = *(bt + pid);
+        cumulative += *(bt + pid);
         *(tat + pid) = cumulative - *(at + pid);
         *(wt + pid) = *(tat + pid) - *(bt + pid);
         *(at + pid) = INT_MIN;       //This is done to exclude process which is alredy completed
@@ -41,8 +47,64 @@ void sjf(int *at, int *bt, int *tat, int *wt, int n){
 
     }
 }
-    
 
+//Function to find tat and wt for Round Robin
+
+    void rr(int *at,int *bt,int *tat,int *wt,int n,int tc){
+        int i,cumulative=0,c=0;
+        int *temp_bt =(int *) malloc(n*sizeof(int));
+        for ( i = 0; i < n; i++){
+            *(temp_bt + i) = *(bt + i);
+        }
+        while(1){
+            for ( i = 0; i < n; i++){
+                if(*(at + i) <= cumulative && *(temp_bt+ i) >0){
+                    if(*(temp_bt + i) <= tc){
+                        cumulative += *(temp_bt + i);
+                        *(tat+i) = cumulative - *(at+i);
+                        *(wt + i) = *(tat + i) - *(bt + i);
+                        *(temp_bt+i) -= tc;
+                        c++;
+                    }
+                    else{
+                        cumulative +=tc;
+                        *(temp_bt+i) -= tc;
+                    }
+                }
+            }
+            if (c == n){
+                break;
+            }
+             
+        }
+    }
+
+//Function to find tat and wt for Priority scheduling
+
+    void ps(int *at,int *bt,int *p,int *tat,int *wt,int n){
+    int cumulative=0,i,c=0,pid,min = INT_MAX;
+    while(1){
+        min =INT_MAX;
+        pid = -1;
+        for (i = 0; i < n; i++){
+           if(*(at +i) <=cumulative && *(p + i) < min  && *(at + i) != INT_MIN){
+               min= *(p + i);
+               pid = i;
+           }
+        }
+        cumulative += *(bt + pid);
+        *(tat + pid) = cumulative - *(at + pid);
+        *(wt + pid) = *(tat + pid) - *(bt + pid);
+        *(at + pid) = INT_MIN;       //This is done to exclude process which is alredy completed
+        c++;
+        if (c == n){
+            break;
+        }
+
+    }
+    }
+
+//Function to print values of tat and wt
 
 void printData(int *tat, int *wt, int n){
     int i;
@@ -103,17 +165,41 @@ void main(){
     fcfs(at,bt,tat,wt,n);
     printData(tat,wt,n);
 
-    // Reseting tat and wt values
-    for (i = 0; i < n; i++){
-        *(tat + i) = INT_MIN;
-        *(wt + i) = INT_MIN;
-    }
+    // Reseting tat and wt values for easy debuging
+    resetVal(tat,wt,n);
     
     // To find Turn around time and wait time of FCFS First Come First Serve
 
     printf("\n----------------SJF Shortest Job First---------------\n\n");
     sjf(at,bt,tat,wt,n);
     printData(tat,wt,n);
+
+   // Reseting tat and wt values for easy debuging
+    resetVal(tat,wt,n);
+  //updating values of arrival time to stock as it was manipulated 
+    rewind(fin);
+    i = 0;
+    while (!feof(fin)){
+        fscanf(fin, "%d\t%d\t%d", at+i,&b,&c);
+        i++;
+    }
+   
+   // To find Turn around time and wait time of RR Round Robin
+
+    printf("\n----------------RR Round Robin---------------\n\n");
+    const int tc =3;            //Time Quantum for round robin
+    rr(at,bt,tat,wt,n,tc);
+    printData(tat,wt,n);
+
+   // Reseting tat and wt values for easy debuging
+    resetVal(tat,wt,n);
+
+   // To find Turn around time and wait time of Priority scheduling
+
+    printf("\n----------------Priority scheduling---------------\n\n");
+    ps(at,bt,p,tat,wt,n);
+    printData(tat,wt,n);
+
     //Freing up dynamically allocated space
 
     free(at);
