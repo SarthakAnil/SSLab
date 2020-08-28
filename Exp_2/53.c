@@ -14,6 +14,7 @@ void main(){
     
     int n,pos,nF=0,j=0,sa,len,i,*status;
     char c[30];
+    int display[3] ={7,8,2};
     FILE *fin;         
     memoryBlock *blocks;
     //checking if the file exixts if so it will open to input file buffer fin else the program will exit displayin ann error message
@@ -77,19 +78,18 @@ void main(){
     j++;
      
     }
-   /*
-    for ( i = 0; i < n; i++)
-    {
-	printf("\nstate :%d \ncontent:%c",(blocks +i)->state,(blocks +i)->content);
+    printf("\nStatus of memory blocks");
+    for ( i = 0; i < n; i++){
+        if((blocks +i)->state == 0)
+            printf("\n\t%d\tFree",i+1);
+        else
+            printf("\n\t%d\tOccupied",i+1);
+    }
+    printf("\n\nBlocks\tContents\n");
+    for (i = 0; i < 3; i++){
+        printf("  %d\t  %c\n",display[i],(blocks + display[i] -1)->content);
     }
     
-    for ( i = 0; i < nF ; i++)
-    {   if(*(status +i) == 1)
-        printf("\nNot allocated");
-        else
-	printf("\nAllocated");
-    }
-    */
     free(blocks);
     fclose(fin);
 }
