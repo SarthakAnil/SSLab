@@ -1,0 +1,54 @@
+
+CONTENTS OF INPUT FILE "TCR18CS053_exp1_input.txt"
+
+Arrival Time	Burst Time	Priority
+0		3		5
+1		33		3
+1		4		2
+6		5		4
+9		23		6
+9		4		1
+
+----------------FCFS First Come First Serve---------------
+
+
+Process		TurnAround Time		Wait Time
+P0			3		0
+P1			35		2
+P2			39		35
+P3			39		34
+P4			59		36
+P5			63		59
+
+----------------SJF Shortest Job First---------------
+
+
+Process		TurnAround Time		Wait Time
+P0			3		0
+P1			71		38
+P2			6		2
+P3			6		1
+P4			30		7
+P5			7		3
+
+----------------RR Round Robin---------------
+
+
+Process		TurnAround Time		Wait Time
+P0			3		0
+P1			71		38
+P2			21		17
+P3			18		13
+P4			54		31
+P5			19		15
+
+----------------Priority scheduling---------------
+
+
+Process		TurnAround Time		Wait Time
+P0			3		0
+P1			39		6
+P2			6		2
+P3			43		38
+P4			63		40
+P5			35		31
